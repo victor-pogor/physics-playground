@@ -12,6 +12,12 @@ importers:
         specifier: ^1.9.5
         version: 1.9.7
     devDependencies:
+      lil-gui:
+        specifier: ^0.20.0
+        version: 0.20.0
+      stats.js:
+        specifier: ^0.17.0
+        version: 0.17.0
       typescript:
         specifier: ~5.8.3
         version: 5.8.3
@@ -493,6 +499,9 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  lil-gui@0.20.0:
+    resolution: {integrity: sha512-k7Ipr0ztqslMA2XvM5z5ZaWhxQtnEOwJBfI/hmSuRh6q4iMG9L0boqqrnZSzBR1jzyJ28OMl47l65ILzRe1TdA==}
+
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
@@ -555,6 +564,9 @@ packages:
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
+
+  stats.js@0.17.0:
+    resolution: {integrity: sha512-hNKz8phvYLPEcRkeG1rsGmV5ChMjKDAWU7/OJJdDErPBNChQXxCo3WZurGpnWc6gZhAzEPFad1aVgyOANH1sMw==}
 
   tinyglobby@0.2.14:
     resolution: {integrity: sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==}
@@ -1029,6 +1041,8 @@ snapshots:
 
   json5@2.2.3: {}
 
+  lil-gui@0.20.0: {}
+
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
@@ -1107,6 +1121,8 @@ snapshots:
       - supports-color
 
   source-map-js@1.2.1: {}
+
+  stats.js@0.17.0: {}
 
   tinyglobby@0.2.14:
     dependencies:
