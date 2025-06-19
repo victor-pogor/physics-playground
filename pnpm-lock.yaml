@@ -12,6 +12,9 @@ importers:
         specifier: ^1.9.5
         version: 1.9.7
     devDependencies:
+      '@webgpu/types':
+        specifier: ^0.1.61
+        version: 0.1.61
       lil-gui:
         specifier: ^0.20.0
         version: 0.20.0
@@ -405,6 +408,9 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
+
+  '@webgpu/types@0.1.61':
+    resolution: {integrity: sha512-w2HbBvH+qO19SB5pJOJFKs533CdZqxl3fcGonqL321VHkW7W/iBo6H8bjDy6pr/+pbMwIu5dnuaAxH7NxBqUrQ==}
 
   babel-plugin-jsx-dom-expressions@0.39.8:
     resolution: {integrity: sha512-/MVOIIjonylDXnrWmG23ZX82m9mtKATsVHB7zYlPfDR9Vdd/NBE48if+wv27bSkBtyO7EPMUlcUc4J63QwuACQ==}
@@ -951,6 +957,8 @@ snapshots:
       '@babel/types': 7.27.6
 
   '@types/estree@1.0.8': {}
+
+  '@webgpu/types@0.1.61': {}
 
   babel-plugin-jsx-dom-expressions@0.39.8(@babel/core@7.27.4):
     dependencies:

@@ -16,6 +16,7 @@
     "solid-js": "^1.9.5"
   },
   "devDependencies": {
+    "@webgpu/types": "^0.1.61",
     "lil-gui": "^0.20.0",
     "stats.js": "^0.17.0",
     "typescript": "~5.8.3",
