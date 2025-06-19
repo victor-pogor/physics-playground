@@ -1,6 +1,6 @@
 import { onMount } from "solid-js";
-import triangleVertWGSL from '../../shaders/triangle.vert.wgsl';
-import redFragWGSL from '../../shaders/red.frag.wgsl';
+import gridVertWGSL from '../../shaders/grid.vert.wgsl';
+import gridFragWGSL from '../../shaders/grid.frag.wgsl';
 import { quitIfWebGPUNotAvailable } from '../util';
 
 export const VectorsComponent = () => {
@@ -8,102 +8,28 @@ export const VectorsComponent = () => {
 
   onMount(async () => {
     if (!canvasRef) return;
+    // --- WebGPU Setup ---
+    const webgpu = await initWebGPU(canvasRef);
+    if (!webgpu) return;
+    const { device, context, presentationFormat } = webgpu;
 
-    const adapter = await navigator.gpu?.requestAdapter({
-      featureLevel: 'compatibility',
-    });
+    // --- Pipeline ---
+    const pipeline = createGridPipeline(device, presentationFormat, gridVertWGSL, gridFragWGSL);
 
-    const device = await adapter?.requestDevice();
-    if (!device) return;
+    // --- Vertex Data & Buffer ---
+    const gridSize = 10;
+    const gridSpacing = 0.1;
+    const vertexData = generateGridVertices(gridSize, gridSpacing);
+    const vertexBuffer = createVertexBuffer(device, vertexData);
 
-    quitIfWebGPUNotAvailable(adapter, device);
-
-    const context = canvasRef.getContext('webgpu') as GPUCanvasContext;
-
-    const devicePixelRatio = window.devicePixelRatio;
-    canvasRef.width = canvasRef.clientWidth * devicePixelRatio;
-    canvasRef.height = canvasRef.clientHeight * devicePixelRatio;
-    const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
-
-    context.configure({
-      device,
-      format: presentationFormat,
-    });
-
-    const pipeline = device.createRenderPipeline({
-      layout: 'auto',
-      vertex: {
-        module: device.createShaderModule({
-          code: triangleVertWGSL,
-        }),
-      },
-      fragment: {
-        module: device.createShaderModule({
-          code: redFragWGSL,
-        }),
-        targets: [
-          {
-            format: presentationFormat,
-          },
-        ],
-      },
-      primitive: {
-        topology: 'triangle-list',
-      },
-    });
-
-    const vertexData = new Float32Array([
-      // Triangle vertices positions (x, y)
-      0, 0,
-      0, 1,
-      1, 0,
-    ]);
-
-    const vertexBuffer = device.createBuffer({
-      size: vertexData.byteLength,
-      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
-    });
-
-    device.queue.writeBuffer(vertexBuffer, 0, vertexData);
-
+    // --- Bind Group ---
     const bindGroup = device.createBindGroup({
       layout: pipeline.getBindGroupLayout(0),
       entries: [],
     });
 
-    function frame() {
-      if (!device) return;
-      const commandEncoder = device.createCommandEncoder();
-      // Get the current texture from the swap chain
-      const swapChainTexture = context.getCurrentTexture();
-      // Create the render pass descriptor with the correct view
-      const renderPassDescriptor: GPURenderPassDescriptor = {
-        colorAttachments: [
-          {
-            view: swapChainTexture.createView(),
-            loadOp: 'clear',
-            clearValue: [0, 0, 0, 1],
-            storeOp: 'store',
-          },
-        ],
-      };
-      const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
-      passEncoder.setPipeline(pipeline);
-      passEncoder.setVertexBuffer(0, vertexBuffer);
-      passEncoder.setBindGroup(0, bindGroup);
-      passEncoder.draw(3, 1, 0, 0);
-      passEncoder.end();
-      device.queue.submit([commandEncoder.finish()]);
-    }
-
-    // Initial call to start the rendering loop
-    frame();
-    // Optionally, you can use requestAnimationFrame to control the frame rate
-    // const animate = () => {
-    //   frame();
-    //   requestAnimationFrame(animate);
-    // };
-    // requestAnimationFrame(animate);
+    // --- Render Frame ---
+    renderFrame(device, context, pipeline, vertexBuffer, bindGroup, vertexData);
   });
 
   return (
@@ -115,3 +41,101 @@ export const VectorsComponent = () => {
     </div>
   );
 };
+
+// Helper: Generate grid vertices
+function generateGridVertices(gridSize: number, gridSpacing: number): Float32Array {
+  const gridVertices: number[] = [];
+  for (let i = -gridSize; i <= gridSize; i++) {
+    const val = i * gridSpacing;
+    // Horizontal line
+    gridVertices.push(-1, val, 1, val);
+    // Vertical line
+    gridVertices.push(val, -1, val, 1);
+  }
+  return new Float32Array(gridVertices);
+}
+
+// Helper: Create render pipeline
+function createGridPipeline(device: GPUDevice, presentationFormat: GPUTextureFormat, gridVertWGSL: string, gridFragWGSL: string): GPURenderPipeline {
+  return device.createRenderPipeline({
+    layout: 'auto',
+    vertex: {
+      module: device.createShaderModule({ code: gridVertWGSL }),
+      buffers: [
+        {
+          arrayStride: 2 * 4,
+          attributes: [
+            { shaderLocation: 0, offset: 0, format: "float32x2" },
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module: device.createShaderModule({ code: gridFragWGSL }),
+      targets: [{ format: presentationFormat }],
+    },
+    primitive: { topology: 'line-list' },
+  });
+}
+
+// Helper: Create vertex buffer
+function createVertexBuffer(device: GPUDevice, vertexData: Float32Array): GPUBuffer {
+  const buffer = device.createBuffer({
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(buffer, 0, vertexData);
+  return buffer;
+}
+
+// Helper: Render a frame
+function renderFrame(
+  device: GPUDevice,
+  context: GPUCanvasContext,
+  pipeline: GPURenderPipeline,
+  vertexBuffer: GPUBuffer,
+  bindGroup: GPUBindGroup,
+  vertexData: Float32Array
+) {
+  const commandEncoder = device.createCommandEncoder();
+  const swapChainTexture = context.getCurrentTexture();
+  const renderPassDescriptor: GPURenderPassDescriptor = {
+    colorAttachments: [
+      {
+        view: swapChainTexture.createView(),
+        loadOp: 'clear',
+        clearValue: [0, 0, 0, 1],
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
+  passEncoder.setPipeline(pipeline);
+  passEncoder.setVertexBuffer(0, vertexBuffer);
+  passEncoder.setBindGroup(0, bindGroup);
+  passEncoder.draw(vertexData.length / 2, 1, 0, 0);
+  passEncoder.end();
+  device.queue.submit([commandEncoder.finish()]);
+}
+
+// Helper: Initialize WebGPU device and context
+async function initWebGPU(canvas: HTMLCanvasElement) {
+  const adapter = await navigator.gpu?.requestAdapter({ featureLevel: 'compatibility' });
+  const device = await adapter?.requestDevice();
+  quitIfWebGPUNotAvailable(adapter, device);
+  const context = canvas.getContext('webgpu') as GPUCanvasContext;
+
+  const devicePixelRatio = window.devicePixelRatio;
+  canvas.width = canvas.clientWidth * devicePixelRatio;
+  canvas.height = canvas.clientHeight * devicePixelRatio;
+
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({ device, format: presentationFormat });
+
+  return { device, context, presentationFormat };
+}
+
+
+
+
