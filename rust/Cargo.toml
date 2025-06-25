@@ -1,0 +1,16 @@
+[workspace]
+members = [
+    "crates"
+]
+resolver = "2"
+
+[workspace.package]
+rust-version = "1.87.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+authors = ["Victor Pogor", "contributors"]
+repository = "https://github.com/victor-pogor/physics-playground.git"
+
+[workspace.dependencies]
+# Local crates
+rendering = { path = "crates/rendering", version = "0.1.0" }

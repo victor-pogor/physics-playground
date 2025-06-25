@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "name": "node",
+            "path": "node"
+        },
+        {
+            "name": "rust",
+            "path": "rust"
+        },
+        {
+            "name": "root",
+            "path": "."
+        }
+    ]
+}
