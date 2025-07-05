@@ -8,12 +8,16 @@
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {},
 		"ghcr.io/devcontainers/features/rust:1": {},
-		"ghcr.io/lumenpink/devcontainer-features/wasm-pack:0": {}
+		"ghcr.io/lumenpink/devcontainer-features/wasm-pack:0": {},
+		"ghcr.io/devcontainers-extra/features/apt-packages:1": {
+			"packages": "libssl-dev,pkg-config,build-essential"
+		}
 	},
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": {
 		"pnpm": "cd node && pnpm install",
-		"cargo-generate": "cd rust && cargo install cargo-generate"
+		"wasm-target": "rustup target add wasm32-unknown-unknown",
+		"wasm-bindgen-cli": "cd rust && cargo install wasm-bindgen-cli"
 	},
 	// Configure tool-specific properties.
 	"customizations": {

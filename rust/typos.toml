@@ -1,0 +1,8 @@
+[files]
+extend-exclude = [
+  "*.pbxproj", # metadata file
+  "*.patch",   # Automatically generated files that should not be manually modified.
+  "*.bin",     # Binary files
+  ".git/",     # Version control files
+]
+ignore-hidden = false

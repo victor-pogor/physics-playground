@@ -1,0 +1,1 @@
+cargo build --release --package triangle --target wasm32-unknown-unknown

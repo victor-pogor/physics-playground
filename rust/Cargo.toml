@@ -13,7 +13,12 @@ repository = "https://github.com/victor-pogor/physics-playground.git"
 
 [workspace.dependencies]
 # Local crates
-rendering = { path = "crates/rendering", version = "0.1.0" }
+app = { path = "crates/app", version = "0.1.0" }
+triangle = { path = "crates/triangle", version = "0.1.0" }
 
 # Third-party crates
-serde = { version = "1.0.219", features = ["derive"] }
+wgpu = "25.0.2"
+wgpu-types = "25.0.0"
+winit = "0.29.15"
+env_logger = "0.11.8"
+pollster = "0.4.0"
