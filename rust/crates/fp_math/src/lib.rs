@@ -10,3 +10,12 @@ pub mod ops;
 pub mod primitives;
 
 pub use glam::*;
+pub use ops::FloatPow;
+
+/// The math prelude.
+///
+/// This includes the most common types in this crate, re-exported for your convenience.
+pub mod prelude {
+    #[doc(hidden)]
+    pub use crate::{Vec2, Vec3, ops};
+}
