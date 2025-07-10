@@ -1,8 +1,18 @@
+[package]
+name = "physics-playground"
+version = "0.0.0-dev"
+edition = "2024"
+categories = ["game-engines", "graphics", "gui", "rendering"]
+description = "A physics engine inspired by Bevy's ECS architecture, designed for educational purposes and experimentation with physics simulations."
+homepage = "https://github.com/victor-pogor/physics-playground"
+keywords = ["game", "physics", "engine", "gamedev", "graphics", "bevy"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/victor-pogor/physics-playground"
+rust-version = "1.88.0"
+
 [workspace]
-members = [
-    "crates/*"
-]
 resolver = "2"
+members = ["crates/*"]
 
 [workspace.package]
 rust-version = "1.87.0"
@@ -13,12 +23,17 @@ repository = "https://github.com/victor-pogor/physics-playground.git"
 
 [workspace.dependencies]
 # Local crates
-app = { path = "crates/app", version = "0.1.0" }
-triangle = { path = "crates/triangle", version = "0.1.0" }
+fp_math = { path = "crates/math" }
 
 # Third-party crates
-wgpu = "25.0.2"
-wgpu-types = "25.0.0"
-winit = "0.29.15"
 env_logger = "0.11.8"
+glam = { version = "0.30.4", default-features = false}
 pollster = "0.4.0"
+wgpu = "26.0.0"
+wgpu-types = "26.0.0"
+winit = "0.30.11"
+
+[[example]]
+name = "2d_vectors"
+path = "examples/2d/2d_vectors.rs"
+doc-scrape-examples = true

@@ -1,0 +1,24 @@
+[package]
+name = "math"
+version = "0.1.0"
+rust-version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+# Local crates
+
+# Third-party crates
+glam = { workspace = true, features = ["bytemuck"] }
+
+[dev-dependencies]
+fp_math = { path = ".", default-features = false, features = ["approx"] }
+glam = { workspace = true, default-features = false, features = ["approx"] }
+
+[features]
+default = ["std"]
+std = [
+  "glam/std",
+]
