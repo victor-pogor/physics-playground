@@ -1,5 +1,5 @@
 [package]
-name = "math"
+name = "fp_math"
 version = "0.1.0"
 rust-version.workspace = true
 edition.workspace = true
@@ -11,6 +11,7 @@ repository.workspace = true
 # Local crates
 
 # Third-party crates
+approx = { workspace = true, optional = true }
 glam = { workspace = true, features = ["bytemuck"] }
 
 [dev-dependencies]
@@ -22,3 +23,6 @@ default = ["std"]
 std = [
   "glam/std",
 ]
+
+# Enable approx for glam types to approximate floating point equality comparisons and assertions
+approx = ["dep:approx", "glam/approx"]
