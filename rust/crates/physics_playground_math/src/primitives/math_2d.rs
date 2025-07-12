@@ -1,4 +1,4 @@
-mod circle;
+pub mod circle;
 
 /// A marker trait for 2D primitives
 pub trait Primitive2d {}

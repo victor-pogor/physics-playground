@@ -66,6 +66,9 @@ dependencies = [
 [[package]]
 name = "physics-playground-internal"
 version = "0.1.0"
+dependencies = [
+ "physics-playground-math",
+]
 
 [[package]]
 name = "physics-playground-math"
