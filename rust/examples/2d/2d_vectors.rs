@@ -2,14 +2,8 @@ use physics_playground::prelude::*;
 
 fn main() {
     let mut app = App::new();
-    app.add_plugins((
-        DefaultPlugins,
-        #[cfg(not(target_arch = "wasm32"))]
-        Wireframe2dPlugin::default(),
-    ))
-    .add_systems(Startup, setup);
-    #[cfg(not(target_arch = "wasm32"))]
-    app.add_systems(Update, toggle_wireframe);
+    app.add_plugins((DefaultPlugins,))
+        .add_systems(Startup, setup);
     app.run();
 }
 
