@@ -10,6 +10,9 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/victor-pogor/physics-playground"
 rust-version = "1.88.0"
 
+[dependencies]
+physics-playground-internal = { path = "crates/physics_playground_internal" }
+
 [workspace]
 resolver = "2"
 members = ["crates/*"]
@@ -23,7 +26,8 @@ repository = "https://github.com/victor-pogor/physics-playground.git"
 
 [workspace.dependencies]
 # Local crates
-fp_math = { path = "crates/math" }
+physics-playground-math = { path = "crates/physics_playground_math" }
+
 
 # Third-party crates
 approx = { version = "0.5", default-features = false }

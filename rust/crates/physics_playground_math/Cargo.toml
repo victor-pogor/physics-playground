@@ -1,5 +1,5 @@
 [package]
-name = "fp_math"
+name = "physics-playground-math"
 version = "0.1.0"
 rust-version.workspace = true
 edition.workspace = true
@@ -15,7 +15,7 @@ approx = { workspace = true, optional = true }
 glam = { workspace = true, features = ["bytemuck"] }
 
 [dev-dependencies]
-fp_math = { path = ".", default-features = false, features = ["approx"] }
+physics-playground-math = { path = ".", default-features = false, features = ["approx"] }
 glam = { workspace = true, default-features = false, features = ["approx"] }
 
 [features]

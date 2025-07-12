@@ -13,15 +13,6 @@ pub struct Circle {
     pub radius: f32,
 }
 
-impl Primitive2d for Circle {}
-
-impl Default for Circle {
-    /// Returns the default [`Circle`] with a radius of `0.5`.
-    fn default() -> Self {
-        Self { radius: 0.5 }
-    }
-}
-
 impl Circle {
     /// Create a new [`Circle`] from a `radius`
     #[inline(always)]
@@ -55,6 +46,15 @@ impl Circle {
     }
 }
 
+impl Primitive2d for Circle {}
+
+impl Default for Circle {
+    /// Returns the default [`Circle`] with a radius of `0.5`.
+    fn default() -> Self {
+        Self { radius: 0.5 }
+    }
+}
+
 impl Measured2d for Circle {
     /// Get the area of the circle
     #[inline(always)]
@@ -64,7 +64,6 @@ impl Measured2d for Circle {
 
     /// Get the perimeter or circumference of the circle
     #[inline(always)]
-    #[doc(alias = "circumference")]
     fn perimeter(&self) -> f32 {
         2.0 * PI * self.radius
     }

@@ -34,3 +34,6 @@ impl FloatPow for f32 {
         self * self * self
     }
 }
+
+#[cfg(feature = "std")]
+pub use std_ops_for_no_std::*;

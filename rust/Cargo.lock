@@ -38,15 +38,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fp_math"
-version = "0.1.0"
-dependencies = [
- "approx",
- "fp_math",
- "glam",
-]
-
-[[package]]
 name = "glam"
 version = "0.30.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -68,6 +59,22 @@ dependencies = [
 [[package]]
 name = "physics-playground"
 version = "0.0.0-dev"
+dependencies = [
+ "physics-playground-internal",
+]
+
+[[package]]
+name = "physics-playground-internal"
+version = "0.1.0"
+
+[[package]]
+name = "physics-playground-math"
+version = "0.1.0"
+dependencies = [
+ "approx",
+ "glam",
+ "physics-playground-math",
+]
 
 [[package]]
 name = "proc-macro2"
